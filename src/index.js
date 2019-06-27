@@ -294,7 +294,7 @@ class Game extends React.PureComponent {
 
   // Select a word at random from our list of possibles.
   randomWord(words) {
-    return words[Math.floor(Math.random() * this.state.words.length)];
+    return words[Math.floor(Math.random() * words.length)];
   }
 
   // Handle a key press. If any letter key is pressed we take it as the next input.
