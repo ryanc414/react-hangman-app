@@ -36,23 +36,25 @@ const hangman_images = [
   hangman13,
 ]
 
-class MetaGame extends React.Component {
-  constructor(props) {
+// Top-level component. Renders either the pre-game setup menu or the main
+// game selectively.
+class MetaGame extends React.Component<{}, {wordLength: number}> {
+  constructor(props: object) {
     super(props);
-    this.state = {wordLength: null};
+    this.state = {wordLength: NaN};
     this.playGame = this.playGame.bind(this);
     this.handleRetry = this.handleRetry.bind(this);
   }
 
-  playGame(wordLength) {
+  playGame(wordLength: number) {
     this.setState({wordLength: wordLength});
   }
 
   handleRetry() {
-    this.setState({wordLength: null});
+    this.setState({wordLength: NaN});
   }
 
-  render() {
+  render()  {
     if (!this.state.wordLength) {
       return <StartSelector playGame={this.playGame} />;
     } else {
@@ -68,21 +70,25 @@ class MetaGame extends React.Component {
   }
 }
 
+interface StartSelectorProps {playGame: (wordLength: number) => void};
+
 // Simple form to select the word length to play with.
-class StartSelector extends React.Component {
-  constructor(props) {
+class StartSelector extends React.Component<
+    StartSelectorProps, {value: string}
+  > {
+  constructor(props: StartSelectorProps) {
     super(props);
     this.state = {value: "8"};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(e) {
+  handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     this.setState({value: e.target.value});
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     this.props.playGame(parseInt(this.state.value));
   }
@@ -113,9 +119,26 @@ class StartSelector extends React.Component {
   }
 }
 
-// Top-level game component.
-class Game extends React.PureComponent {
-  constructor(props) {
+interface GameProps {
+  wordLength: number,
+  placeHolder: string,
+  maxMisses: number,
+  handleRetry: () => void,
+};
+
+interface GameState {
+  misses: number,
+  discoveredLetterCount: number,
+  guessedLetters: Map<string, boolean>,
+  revealedWord: Array<string>,
+  words: Array<string>,
+  finishMessage: string | null,
+  gamediv: React.RefObject<HTMLDivElement>,
+};
+
+// Main Hangman game component.
+class Game extends React.Component<GameProps, GameState>  {
+  constructor(props: GameProps) {
     super(props)
     this.state = this.initialState();
     this.handleLetter = this.handleLetter.bind(this);
@@ -124,11 +147,13 @@ class Game extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.refs.gamediv.focus();
+    if (this.state.gamediv.current) {
+      this.state.gamediv.current.focus();
+    }
   }
 
   // Construct initial state, also used for reset.
-  initialState() {
+  initialState(): GameState {
     let guessedLetters = new Map();
     const aCode = "A".charCodeAt(0);
 
@@ -149,11 +174,12 @@ class Game extends React.PureComponent {
       revealedWord: revealedWord,
       words: words,
       finishMessage: null,
+      gamediv: React.createRef(),
     };
   }
 
   // Filter words by length.
-  wordsOfLength(n) {
+  wordsOfLength(n: number): Array<string> {
     return (Object.keys(allWords)
 			.filter((word) => word.length === n)
 			.map((word) => word.toUpperCase())
@@ -161,7 +187,7 @@ class Game extends React.PureComponent {
   }
 
   // Handle a guessed letter.
-  handleLetter(letter) {
+  handleLetter(letter: string) {
     if ((letter.length !== 1) || (letter < 'A') || (letter > 'Z')) {
       throw new Error("Not a letter: " + letter);
 		}
@@ -176,23 +202,17 @@ class Game extends React.PureComponent {
 
     let guessedLetters = new Map(this.state.guessedLetters);
     guessedLetters.set(letter, true);
-    console.log("guessedLetters:");
-    console.log(guessedLetters);
 
     const splitWords = this.splitWordsByLetter(letter);
-    console.log("splitWords:");
-    console.log(splitWords);
     const patternWords = this.mostFrequentPattern(
       splitWords.wordsWithLetter, letter);
-    console.log("patternWords:");
-    console.log(patternWords);
 
-    let revealedWord;
-    let misses;
-    let discoveredLetterCount;
-    let words;
+    let revealedWord: Array<string>;
+    let misses: number;
+    let discoveredLetterCount: number;
+    let words: Array<string>;
 
-    if (splitWords.wordsWithoutLetter.length >
+    if (splitWords.wordsWithoutLetter.length >=
         patternWords.mostFrequentMatchingWords.length) {
       console.log("Bad guess");
       revealedWord = this.state.revealedWord;
@@ -201,6 +221,10 @@ class Game extends React.PureComponent {
       words = splitWords.wordsWithoutLetter;
     } else {
       console.log("Good guess!");
+      if (patternWords.mostFrequentPattern === null) {
+        throw new Error("No pattern was found");
+      }
+
       revealedWord = patternWords.mostFrequentPattern.reveal(
         this.state.revealedWord);
       misses = this.state.misses;
@@ -231,9 +255,10 @@ class Game extends React.PureComponent {
 
   // Split our current words list into two, one with and one without a certain
   // letter.
-  splitWordsByLetter(letter) {
-    let wordsWithoutLetter = [];
-    let wordsWithLetter = [];
+  splitWordsByLetter(letter: string): {
+      wordsWithoutLetter: Array<string>, wordsWithLetter: Array<string>} {
+    let wordsWithoutLetter: Array<string> = [];
+    let wordsWithLetter: Array<string> = [];
 
     this.state.words.forEach((word) => {
       if (word.indexOf(letter) === -1) {
@@ -250,9 +275,12 @@ class Game extends React.PureComponent {
   }
 
   // Find the letter pattern that matches the most words.
-  mostFrequentPattern(wordsWithLetter, letter) {
-    let mostFrequentPattern;
-    let mostFrequentMatchingWords = [];
+  mostFrequentPattern(wordsWithLetter: Array<string>, letter: string): {
+        mostFrequentPattern: LetterPattern | null,
+        mostFrequentMatchingWords: Array<string>,
+      } {
+    let mostFrequentPattern = null;
+    let mostFrequentMatchingWords: Array<string> = [];
 
     // Algorithm for finding the most frequent pattern:
     //
@@ -261,8 +289,9 @@ class Game extends React.PureComponent {
     // 3. Remove matching words
     // 4. Update the running count of most frequent pattern.
     // 5. Repeat until all words are exhausted.
-    while (wordsWithLetter.length > 0) {
-      const word = wordsWithLetter.shift();
+    for (let word = wordsWithLetter.shift();
+         word !== undefined;
+         word = wordsWithLetter.shift()) {
       const pattern = new LetterPattern(word, letter);
       if (pattern.size === 0) {
         throw new Error("Pattern did not match");
@@ -293,12 +322,13 @@ class Game extends React.PureComponent {
   }
 
   // Select a word at random from our list of possibles.
-  randomWord(words) {
+  randomWord(words: Array<string>): string {
     return words[Math.floor(Math.random() * words.length)];
   }
 
-  // Handle a key press. If any letter key is pressed we take it as the next input.
-  onKeyUp(e) {
+  // Handle a key press. If any letter key is pressed we take it as the next
+  // input.
+  onKeyUp(e: React.KeyboardEvent<HTMLDivElement>) {
     console.log('Key pressed: ' + e.key);
     if (e.key.length !== 1) {
       return;
@@ -326,7 +356,12 @@ class Game extends React.PureComponent {
   // Main render function.
   render() {
     return (
-      <div className="game" onKeyUp={this.onKeyUp} tabIndex="0" ref="gamediv">
+      <div
+        className="game"
+        onKeyUp={this.onKeyUp}
+        tabIndex={0}
+        ref={this.state.gamediv}
+      >
         <div className="game-info">
           <Hangman misses={this.state.misses} />
           <StatusColumn
@@ -335,7 +370,10 @@ class Game extends React.PureComponent {
             onRetry={this.handleRetry}
           />
         </div>
-        <Keyboard handleLetter={this.handleLetter} guessedLetters={this.state.guessedLetters} />
+        <Keyboard
+          handleLetter={this.handleLetter}
+          guessedLetters={this.state.guessedLetters}
+        />
         <p>Click keys or use your keyboard to guess a letter.</p>
       </div>
     );
@@ -343,7 +381,7 @@ class Game extends React.PureComponent {
 }
 
 // Selects and renders a hangman image depending on the number of misses.
-function Hangman(props) {
+function Hangman(props: {misses: number}) {
   const img_src = hangman_images[props.misses]
   return (
     <img
@@ -357,12 +395,18 @@ function Hangman(props) {
   );
 }
 
+interface StatusColumnProps {
+  revealedWord: Array<string>,
+  finishMessage: string | null,
+  onRetry: () => void,
+}
+
 // Display the revealed word and any extra status information.
-function StatusColumn(props) {
+function StatusColumn(props: StatusColumnProps) {
   const revealedWord = props.revealedWord.join(" ");
 
   let finishInfo = null;
-  if (props.finishMessage) {
+  if (props.finishMessage !== null) {
     finishInfo = (
       <>
         <p>{props.finishMessage}</p>
@@ -383,10 +427,14 @@ function StatusColumn(props) {
 }
 
 // Represents a pattern of a letter matching a word.
-class LetterPattern {
+class LetterPattern  {
+
+  public size: number;
+  private letter: string;
+  private pattern: Array<boolean>;
 
   // Construct a pattern for a particular letter in a word.
-  constructor(word, letter) {
+  constructor(word: string, letter: string) {
     this.letter = letter;
     let size = 0;
     let pattern = Array(word.length);
@@ -405,7 +453,7 @@ class LetterPattern {
   }
 
   // Check if a word matches this pattern.
-  matches(word) {
+  matches(word: string): boolean {
     if (word.length !== this.pattern.length) {
       throw new Error("Word length does not match pattern");
     }
@@ -422,7 +470,7 @@ class LetterPattern {
   }
 
   // Reveals letters in this pattern in the word.
-  reveal(revealedSoFar) {
+  reveal(revealedSoFar: Array<string>) {
     if (revealedSoFar.length !== this.pattern.length) {
       throw new Error("Word length does not match pattern");
     }
@@ -441,37 +489,47 @@ class LetterPattern {
   }
 }
 
-class Keyboard extends React.Component {
-  render() {
-    return (
-      <div className="keyboard">
-        <KeyboardRow
-           letters={["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]}
-           handleLetter={this.props.handleLetter}
-           guessedLetters={this.props.guessedLetters}
-        />
-        <KeyboardRow
-          letters={["A", "S", "D", "F", "G", "H", "J", "K", "L"]}
-          handleLetter={this.props.handleLetter}
-          guessedLetters={this.props.guessedLetters}
-        />
-        <KeyboardRow
-          letters={["Z", "X", "C", "V", "B", "N", "M"]}
-          handleLetter={this.props.handleLetter}
-          guessedLetters={this.props.guessedLetters}
-        />
-      </div>
-    );
-  }
+interface KeyboardProps {
+  handleLetter: (letter: string) => void,
+  guessedLetters: Map<string, boolean>,
+};
+
+
+function Keyboard(props: KeyboardProps) {
+  return (
+    <div className="keyboard">
+      <KeyboardRow
+         letters={["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]}
+         handleLetter={props.handleLetter}
+         guessedLetters={props.guessedLetters}
+      />
+      <KeyboardRow
+        letters={["A", "S", "D", "F", "G", "H", "J", "K", "L"]}
+        handleLetter={props.handleLetter}
+        guessedLetters={props.guessedLetters}
+      />
+      <KeyboardRow
+        letters={["Z", "X", "C", "V", "B", "N", "M"]}
+        handleLetter={props.handleLetter}
+        guessedLetters={props.guessedLetters}
+      />
+    </div>
+  );
 }
 
-class KeyboardRow extends React.Component {
-  constructor(props) {
+interface KeyboardRowProps {
+  handleLetter: (letter: string) => void,
+  guessedLetters: Map<string, boolean>,
+  letters: Array<string>,
+};
+
+class KeyboardRow extends React.Component<KeyboardRowProps, {}> {
+  constructor(props: KeyboardRowProps) {
     super(props);
     this.renderLetter = this.renderLetter.bind(this);
   }
 
-  renderLetter(letter) {
+  renderLetter(letter: string) {
     if (this.props.guessedLetters.get(letter)) {
       return (
         <Key
@@ -500,14 +558,18 @@ class KeyboardRow extends React.Component {
   }
 }
 
-class Key extends React.Component {
-  render() {
-    return (
-      <button className={this.props.className} onClick={this.props.onClick}>
-        {this.props.letter}
-      </button>
-    );
-  }
+interface KeyProps {
+  letter: string,
+  className: string,
+  onClick: () => void,
+}
+
+function Key(props: KeyProps) {
+  return (
+    <button className={props.className} onClick={props.onClick}>
+      {props.letter}
+    </button>
+  );
 }
 
 // ========================================
