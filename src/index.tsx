@@ -2,16 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-import hangman0 from "./hangman0.png"
-import hangman1 from "./hangman1.png"
-import hangman2 from "./hangman2.png"
-import hangman3 from "./hangman3.png"
-import hangman4 from "./hangman4.png"
-import hangman5 from "./hangman5.png"
-import hangman6 from "./hangman6.png"
-import hangman7 from "./hangman7.png"
-import hangman8 from "./hangman8.png"
-import hangman9 from "./hangman9.png"
+import hangman00 from "./hangman00.png"
+import hangman01 from "./hangman01.png"
+import hangman02 from "./hangman02.png"
+import hangman03 from "./hangman03.png"
+import hangman04 from "./hangman04.png"
+import hangman05 from "./hangman05.png"
+import hangman06 from "./hangman06.png"
+import hangman07 from "./hangman07.png"
+import hangman08 from "./hangman08.png"
+import hangman09 from "./hangman09.png"
 import hangman10 from "./hangman10.png"
 import hangman11 from "./hangman11.png"
 import hangman12 from "./hangman12.png"
@@ -20,16 +20,16 @@ import hangman13 from "./hangman13.png"
 import allWords from "./words_dictionary.json";
 
 const hangman_images = [
-  hangman0,
-  hangman1,
-  hangman2,
-  hangman3,
-  hangman4,
-  hangman5,
-  hangman6,
-  hangman7,
-  hangman8,
-  hangman9,
+  hangman00,
+  hangman01,
+  hangman02,
+  hangman03,
+  hangman04,
+  hangman05,
+  hangman06,
+  hangman07,
+  hangman08,
+  hangman09,
   hangman10,
   hangman11,
   hangman12,
