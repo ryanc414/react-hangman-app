@@ -17,7 +17,7 @@ import hangman11 from "./hangman11.png"
 import hangman12 from "./hangman12.png"
 import hangman13 from "./hangman13.png"
 
-import allWords from "./words_dictionary.json";
+import allWords from "./dictionary.json";
 
 const hangman_images = [
   hangman00,
@@ -180,7 +180,7 @@ class Game extends React.Component<GameProps, GameState>  {
 
   // Filter words by length.
   wordsOfLength(n: number): Array<string> {
-    return (Object.keys(allWords)
+    return (allWords
 			.filter((word) => word.length === n)
 			.map((word) => word.toUpperCase())
 		);
