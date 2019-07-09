@@ -12,16 +12,17 @@ body {
 .game-info {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 
-.word-status {
-  display: flex;
-  flex-direction: column;
+.hangman-img {
+  flex: 1 1 auto;
+  max-width: 350px;
 }
 
-.input-box {
-  display: flex;
-  flex-direction: row;
+.status-col {
+  flex: 1 1 auto;
+  min-width: 200px;
 }
 
 .key {
@@ -60,6 +61,13 @@ body {
 
 .key-guessed:focus {
 	outline: none;
+}
+
+.keyboard-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 340px;
 }
 
 .keyboard-row:after {

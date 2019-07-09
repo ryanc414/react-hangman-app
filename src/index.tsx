@@ -385,6 +385,7 @@ function Hangman(props: {misses: number}) {
   const img_src = hangman_images[props.misses]
   return (
     <img
+      className="hangman-img"
       src={img_src}
       alt={
         "A poor stick man in stage "
@@ -418,7 +419,7 @@ function StatusColumn(props: StatusColumnProps) {
   }
 
   return (
-    <div className="revealed-word">
+    <div className="status-col">
       <p>Word:</p>
       <p>{revealedWord}</p>
       {finishInfo}
