@@ -1,15 +1,29 @@
 {
   "files": {
     "main.css": "/react-hangman-app/static/css/main.01d0e933.chunk.css",
-    "main.js": "/react-hangman-app/static/js/main.8cafe8cd.chunk.js",
-    "main.js.map": "/react-hangman-app/static/js/main.8cafe8cd.chunk.js.map",
+    "main.js": "/react-hangman-app/static/js/main.665b4548.chunk.js",
+    "main.js.map": "/react-hangman-app/static/js/main.665b4548.chunk.js.map",
     "runtime~main.js": "/react-hangman-app/static/js/runtime~main.55837de3.js",
     "runtime~main.js.map": "/react-hangman-app/static/js/runtime~main.55837de3.js.map",
     "static/js/2.6a01dcbd.chunk.js": "/react-hangman-app/static/js/2.6a01dcbd.chunk.js",
     "static/js/2.6a01dcbd.chunk.js.map": "/react-hangman-app/static/js/2.6a01dcbd.chunk.js.map",
     "index.html": "/react-hangman-app/index.html",
-    "precache-manifest.e567a3242368b7e115a5cc897de6fd67.js": "/react-hangman-app/precache-manifest.e567a3242368b7e115a5cc897de6fd67.js",
+    "precache-manifest.87dcadde5845a9c24374bf7d487f147e.js": "/react-hangman-app/precache-manifest.87dcadde5845a9c24374bf7d487f147e.js",
     "service-worker.js": "/react-hangman-app/service-worker.js",
-    "static/css/main.01d0e933.chunk.css.map": "/react-hangman-app/static/css/main.01d0e933.chunk.css.map"
+    "static/css/main.01d0e933.chunk.css.map": "/react-hangman-app/static/css/main.01d0e933.chunk.css.map",
+    "static/media/hangman00.svg": "/react-hangman-app/static/media/hangman00.5ce7117f.svg",
+    "static/media/hangman01.svg": "/react-hangman-app/static/media/hangman01.352e15ff.svg",
+    "static/media/hangman02.svg": "/react-hangman-app/static/media/hangman02.794f5d62.svg",
+    "static/media/hangman03.svg": "/react-hangman-app/static/media/hangman03.d66ac1a0.svg",
+    "static/media/hangman04.svg": "/react-hangman-app/static/media/hangman04.d5c2f7ed.svg",
+    "static/media/hangman05.svg": "/react-hangman-app/static/media/hangman05.fa3a1b0b.svg",
+    "static/media/hangman06.svg": "/react-hangman-app/static/media/hangman06.f8db9435.svg",
+    "static/media/hangman07.svg": "/react-hangman-app/static/media/hangman07.a4dde311.svg",
+    "static/media/hangman08.svg": "/react-hangman-app/static/media/hangman08.a011147c.svg",
+    "static/media/hangman09.svg": "/react-hangman-app/static/media/hangman09.0610cd3e.svg",
+    "static/media/hangman10.svg": "/react-hangman-app/static/media/hangman10.48e16e87.svg",
+    "static/media/hangman11.svg": "/react-hangman-app/static/media/hangman11.1c0e7018.svg",
+    "static/media/hangman12.svg": "/react-hangman-app/static/media/hangman12.cc091c38.svg",
+    "static/media/hangman13.svg": "/react-hangman-app/static/media/hangman13.06d9fddc.svg"
   }
 }
