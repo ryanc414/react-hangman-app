@@ -192,64 +192,67 @@ class Game extends React.Component<GameProps, GameState>  {
       throw new Error("Not a letter: " + letter);
 		}
 
-    if (this.state.guessedLetters.get(letter)) {
-      throw new Error("Already guessed letter: " + letter);
-    }
-
-    if (this.state.finishMessage) {
-      return;
-    }
-
-    let guessedLetters = new Map(this.state.guessedLetters);
-    guessedLetters.set(letter, true);
-
-    const splitWords = this.splitWordsByLetter(letter);
-    const patternWords = this.mostFrequentPattern(
-      splitWords.wordsWithLetter, letter);
-
-    let revealedWord: Array<string>;
-    let misses: number;
-    let discoveredLetterCount: number;
-    let words: Array<string>;
-
-    if (splitWords.wordsWithoutLetter.length >=
-        patternWords.mostFrequentMatchingWords.length) {
-      console.log("Bad guess");
-      revealedWord = this.state.revealedWord;
-      misses = this.state.misses + 1;
-      discoveredLetterCount = this.state.discoveredLetterCount;
-      words = splitWords.wordsWithoutLetter;
-    } else {
-      console.log("Good guess!");
-      if (patternWords.mostFrequentPattern === null) {
-        throw new Error("No pattern was found");
+    this.setState((state: GameState, props: GameProps): GameState => {
+      if (state.guessedLetters.get(letter)) {
+        throw new Error("Already guessed letter: " + letter);
       }
 
-      revealedWord = patternWords.mostFrequentPattern.reveal(
-        this.state.revealedWord);
-      misses = this.state.misses;
-      discoveredLetterCount = (
-        this.state.discoveredLetterCount
-        + patternWords.mostFrequentPattern.size
-      );
-      words = patternWords.mostFrequentMatchingWords;
-    }
+      if (state.finishMessage) {
+        return state;
+      }
 
-    let finishMessage = null;
-    if (misses === this.props.maxMisses) {
-      finishMessage = (
-        "Too many misses. I was thinking of: " + this.randomWord(words));
-    } else if (discoveredLetterCount === this.props.wordLength) {
-      finishMessage = "You won! I was thinking of: " + revealedWord.join("");
-    }
+      let guessedLetters = new Map(state.guessedLetters);
+      guessedLetters.set(letter, true);
 
-    this.setState({
+      const splitWords = this.splitWordsByLetter(letter);
+      const patternWords = this.mostFrequentPattern(
+        splitWords.wordsWithLetter, letter);
+
+      let revealedWord: Array<string>;
+      let misses: number;
+      let discoveredLetterCount: number;
+      let words: Array<string>;
+
+      if (splitWords.wordsWithoutLetter.length >=
+          patternWords.mostFrequentMatchingWords.length) {
+        console.log("Bad guess");
+        revealedWord = state.revealedWord;
+        misses = state.misses + 1;
+        discoveredLetterCount = state.discoveredLetterCount;
+        words = splitWords.wordsWithoutLetter;
+      } else {
+        console.log("Good guess!");
+        if (patternWords.mostFrequentPattern === null) {
+          throw new Error("No pattern was found");
+        }
+
+        revealedWord = patternWords.mostFrequentPattern.reveal(
+          state.revealedWord);
+        misses = state.misses;
+        discoveredLetterCount = (
+          state.discoveredLetterCount
+          + patternWords.mostFrequentPattern.size
+        );
+        words = patternWords.mostFrequentMatchingWords;
+      }
+
+      let finishMessage = null;
+      if (misses === props.maxMisses) {
+        finishMessage = (
+          "Too many misses. I was thinking of: " + this.randomWord(words));
+      } else if (discoveredLetterCount === props.wordLength) {
+        finishMessage = "You won! I was thinking of: " + revealedWord.join("");
+      }
+
+      return {
         misses: misses,
         discoveredLetterCount: discoveredLetterCount,
         guessedLetters: guessedLetters,
         revealedWord: revealedWord,
         words: words,
         finishMessage: finishMessage,
+        gamediv: state.gamediv,
+      };
     });
   }
 
