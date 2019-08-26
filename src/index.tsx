@@ -2,24 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-import hangman00 from "./hangman00.png"
-import hangman01 from "./hangman01.png"
-import hangman02 from "./hangman02.png"
-import hangman03 from "./hangman03.png"
-import hangman04 from "./hangman04.png"
-import hangman05 from "./hangman05.png"
-import hangman06 from "./hangman06.png"
-import hangman07 from "./hangman07.png"
-import hangman08 from "./hangman08.png"
-import hangman09 from "./hangman09.png"
-import hangman10 from "./hangman10.png"
-import hangman11 from "./hangman11.png"
-import hangman12 from "./hangman12.png"
-import hangman13 from "./hangman13.png"
+import hangman00 from "./hangman00.svg"
+import hangman01 from "./hangman01.svg"
+import hangman02 from "./hangman02.svg"
+import hangman03 from "./hangman03.svg"
+import hangman04 from "./hangman04.svg"
+import hangman05 from "./hangman05.svg"
+import hangman06 from "./hangman06.svg"
+import hangman07 from "./hangman07.svg"
+import hangman08 from "./hangman08.svg"
+import hangman09 from "./hangman09.svg"
+import hangman10 from "./hangman10.svg"
+import hangman11 from "./hangman11.svg"
+import hangman12 from "./hangman12.svg"
+import hangman13 from "./hangman13.svg"
 
 import allWords from "./dictionary.json";
 
-const hangman_images = [
+const HangmanImages = [
   hangman00,
   hangman01,
   hangman02,
@@ -385,7 +385,7 @@ class Game extends React.Component<GameProps, GameState>  {
 
 // Selects and renders a hangman image depending on the number of misses.
 function Hangman(props: {misses: number}) {
-  const img_src = hangman_images[props.misses]
+  const img_src = HangmanImages[props.misses]
   return (
     <img
       className="hangman-img"
