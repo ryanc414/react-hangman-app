@@ -2,38 +2,38 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-import hangman00 from "./hangman00.png"
-import hangman01 from "./hangman01.png"
-import hangman02 from "./hangman02.png"
-import hangman03 from "./hangman03.png"
-import hangman04 from "./hangman04.png"
-import hangman05 from "./hangman05.png"
-import hangman06 from "./hangman06.png"
-import hangman07 from "./hangman07.png"
-import hangman08 from "./hangman08.png"
-import hangman09 from "./hangman09.png"
-import hangman10 from "./hangman10.png"
-import hangman11 from "./hangman11.png"
-import hangman12 from "./hangman12.png"
-import hangman13 from "./hangman13.png"
+import { ReactComponent as Hangman00 } from "./hangman00.svg"
+import { ReactComponent as Hangman01 } from "./hangman01.svg"
+import { ReactComponent as Hangman02 } from "./hangman02.svg"
+import { ReactComponent as Hangman03 } from "./hangman03.svg"
+import { ReactComponent as Hangman04 } from "./hangman04.svg"
+import { ReactComponent as Hangman05 } from "./hangman05.svg"
+import { ReactComponent as Hangman06 } from "./hangman06.svg"
+import { ReactComponent as Hangman07 } from "./hangman07.svg"
+import { ReactComponent as Hangman08 } from "./hangman08.svg"
+import { ReactComponent as Hangman09 } from "./hangman09.svg"
+import { ReactComponent as Hangman10 } from "./hangman10.svg"
+import { ReactComponent as Hangman11 } from "./hangman11.svg"
+import { ReactComponent as Hangman12 } from "./hangman12.svg"
+import { ReactComponent as Hangman13 } from "./hangman13.svg"
 
 import allWords from "./dictionary.json";
 
-const hangman_images = [
-  hangman00,
-  hangman01,
-  hangman02,
-  hangman03,
-  hangman04,
-  hangman05,
-  hangman06,
-  hangman07,
-  hangman08,
-  hangman09,
-  hangman10,
-  hangman11,
-  hangman12,
-  hangman13,
+const HangmanComponents = [
+  Hangman00,
+  Hangman01,
+  Hangman02,
+  Hangman03,
+  Hangman04,
+  Hangman05,
+  Hangman06,
+  Hangman07,
+  Hangman08,
+  Hangman09,
+  Hangman10,
+  Hangman11,
+  Hangman12,
+  Hangman13,
 ]
 
 // Top-level component. Renders either the pre-game setup menu or the main
@@ -385,18 +385,7 @@ class Game extends React.Component<GameProps, GameState>  {
 
 // Selects and renders a hangman image depending on the number of misses.
 function Hangman(props: {misses: number}) {
-  const img_src = hangman_images[props.misses]
-  return (
-    <img
-      className="hangman-img"
-      src={img_src}
-      alt={
-        "A poor stick man in stage "
-        + props.misses
-        + " of being hanged :("
-      }
-    />
-  );
+  return HangmanComponents[props.misses];
 }
 
 interface StatusColumnProps {
