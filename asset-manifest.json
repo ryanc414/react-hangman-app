@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/react-hangman-app/static/css/main.01d0e933.chunk.css",
+    "main.css": "/react-hangman-app/static/css/main.2a248af2.chunk.css",
     "main.js": "/react-hangman-app/static/js/main.665b4548.chunk.js",
     "main.js.map": "/react-hangman-app/static/js/main.665b4548.chunk.js.map",
     "runtime~main.js": "/react-hangman-app/static/js/runtime~main.55837de3.js",
@@ -8,9 +8,9 @@
     "static/js/2.6a01dcbd.chunk.js": "/react-hangman-app/static/js/2.6a01dcbd.chunk.js",
     "static/js/2.6a01dcbd.chunk.js.map": "/react-hangman-app/static/js/2.6a01dcbd.chunk.js.map",
     "index.html": "/react-hangman-app/index.html",
-    "precache-manifest.87dcadde5845a9c24374bf7d487f147e.js": "/react-hangman-app/precache-manifest.87dcadde5845a9c24374bf7d487f147e.js",
+    "precache-manifest.623db15a524c0d9537473ec5dc638a61.js": "/react-hangman-app/precache-manifest.623db15a524c0d9537473ec5dc638a61.js",
     "service-worker.js": "/react-hangman-app/service-worker.js",
-    "static/css/main.01d0e933.chunk.css.map": "/react-hangman-app/static/css/main.01d0e933.chunk.css.map",
+    "static/css/main.2a248af2.chunk.css.map": "/react-hangman-app/static/css/main.2a248af2.chunk.css.map",
     "static/media/hangman00.svg": "/react-hangman-app/static/media/hangman00.5ce7117f.svg",
     "static/media/hangman01.svg": "/react-hangman-app/static/media/hangman01.352e15ff.svg",
     "static/media/hangman02.svg": "/react-hangman-app/static/media/hangman02.794f5d62.svg",
